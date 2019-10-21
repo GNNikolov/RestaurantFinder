@@ -1,0 +1,2 @@
+include ':app', ':apiwrapper', ':placesapiwrapper'
+rootProject.name='My Application'
