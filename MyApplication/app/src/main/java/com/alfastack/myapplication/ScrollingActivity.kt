@@ -1,11 +1,14 @@
 package com.alfastack.myapplication
 
 import android.os.Bundle
+import android.util.Log
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import com.alfastack.placesapiwrapper.ApiHandler
+import com.alfastack.placesapiwrapper.callbacks.ApiCallback
+import com.alfastack.placesapiwrapper.models.Restaurant
 import kotlinx.android.synthetic.main.activity_scrolling.*
 
 class ScrollingActivity : AppCompatActivity() {
@@ -18,7 +21,24 @@ class ScrollingActivity : AppCompatActivity() {
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
         }
-        ApiHandler().execute("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=42.654643,%2023.349079&radius=600&type=restaurant&key=AIzaSyD9DpsJqq_TeWBHy1Hfir0B2C2rY4pmvYY")
+        ApiHandler(object : ApiCallback{
+            override fun onFetched(data: MutableList<Restaurant>?) {
+                data?.let {
+                    for (item in it){
+                        Log.i("Fetched", item.toString())
+                    }
+                }
+            }
+
+            override fun onPreExecute() {
+
+            }
+
+            override fun onFetchFailed(message: String?) {
+                Log.i("Finished", message.toString())
+            }
+
+        }).execute("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=42.654643,%2023.349079&radius=600&type=restaurant&key=AIzaSyD9DpsJqq_TeWBHy1Hfir0B2C2rY4pmvYY")
 
     }
 

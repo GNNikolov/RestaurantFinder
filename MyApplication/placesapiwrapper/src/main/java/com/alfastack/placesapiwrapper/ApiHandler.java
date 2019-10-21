@@ -5,7 +5,10 @@ import android.util.Log;
 
 import androidx.annotation.WorkerThread;
 
+import com.alfastack.placesapiwrapper.callbacks.ApiCallback;
 import com.alfastack.placesapiwrapper.models.Restaurant;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,6 +20,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -27,10 +31,17 @@ public class ApiHandler extends AsyncTask<String, Void, List<Restaurant>> {
     private static final String REQUEST_METHOD = "GET";
     private static final int READ_TIMEOUT = 15000;
     private static final int CONNECTION_TIMEOUT = 15000;
+    private String status = null;
+    private ApiCallback mCallback;
+
+    public ApiHandler(ApiCallback mCallback){
+        this.mCallback = mCallback;
+    }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
+        mCallback.onPreExecute();
     }
 
     @Override
@@ -63,12 +74,20 @@ public class ApiHandler extends AsyncTask<String, Void, List<Restaurant>> {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return decodeJSON(result);
+        if (result != null)
+            return decodeJSON(result);
+        else
+            return null;
     }
 
     @Override
     protected void onPostExecute(List<Restaurant> restaurants) {
         super.onPostExecute(restaurants);
+        if (restaurants != null && status != null && status.equals("OK")){
+            mCallback.onFetched(restaurants);
+        }else {
+            mCallback.onFetchFailed(status);
+        }
     }
 
     @WorkerThread
@@ -76,16 +95,20 @@ public class ApiHandler extends AsyncTask<String, Void, List<Restaurant>> {
         List<Restaurant> data = new ArrayList<>();
         try {
             final JSONObject jsonObject = new JSONObject(input);
+            status = jsonObject.getString("status");
             final JSONArray restaurants = jsonObject.getJSONArray("results");
+            GsonBuilder gsonBuilder = new GsonBuilder();
+            Gson gson = gsonBuilder.create();
             for (int i = 0 ; i < restaurants.length(); i++){
                 if (restaurants.get(i) != null) {
-                    Log.i("Data", String.valueOf(restaurants.get(i)));
+                    Restaurant item = gson.fromJson(restaurants.get(i).toString(), Restaurant.class);
+                    data.add(item);
                 }
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return null;
+        return data;
     }
 
 }

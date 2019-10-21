@@ -2,41 +2,56 @@ package com.alfastack.placesapiwrapper.models;
 
 import android.location.Location;
 
+import androidx.annotation.NonNull;
+
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by Joro on 21/10/2019
  */
 public class Restaurant {
     private Location location;
+    @SerializedName("name")
     private String name;
-    private boolean openNow;
+    @SerializedName("vicinity")
+    private String address;
 
-    public Restaurant(Location location, String name, boolean openNow) {
+    public Restaurant(Location location, String name, String address) {
         this.location = location;
-        this.openNow = openNow;
+        this.address = address;
         this.name = name;
     }
 
-    public void setLocation(Location location) {
-        this.location = location;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setOpenNow(boolean openNow) {
-        this.openNow = openNow;
+    public Restaurant() {
     }
 
     public Location getLocation() {
         return location;
     }
 
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
     public String getName() {
         return name;
     }
 
-    public boolean isOpenNow() {
-        return openNow;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return name + "/" + address;
     }
 }
