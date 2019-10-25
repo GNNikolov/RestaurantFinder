@@ -1,7 +1,6 @@
 package com.alfastack.placesapiwrapper;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
 import androidx.annotation.WorkerThread;
 
@@ -20,13 +19,12 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
  * Created by Joro on 21/10/2019
  */
-public class ApiHandler extends AsyncTask<String, Void, List<Restaurant>> {
+ class ApiHandler extends AsyncTask<String, Void, List<Restaurant>> {
 
     private static final String REQUEST_METHOD = "GET";
     private static final int READ_TIMEOUT = 15000;
@@ -34,7 +32,7 @@ public class ApiHandler extends AsyncTask<String, Void, List<Restaurant>> {
     private String status = null;
     private ApiCallback mCallback;
 
-    public ApiHandler(ApiCallback mCallback){
+    ApiHandler(ApiCallback mCallback){
         this.mCallback = mCallback;
     }
 
