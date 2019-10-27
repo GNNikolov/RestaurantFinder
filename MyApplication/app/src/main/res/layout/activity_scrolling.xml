@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout  xmlns:bind="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
     <data>
         <variable
             name="item"
             type="android.location.Location" />
     </data>
-    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/nestedLayout"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/white"
+        android:background="#37D3CECE"
         android:fitsSystemWindows="true"
-        app:statusBarScrim="@android:color/transparent"
+        bind:statusBarScrim="@android:color/transparent"
         tools:context=".ScrollingActivity">
 
         <com.google.android.material.appbar.AppBarLayout
@@ -22,16 +23,16 @@
             android:layout_height="@dimen/app_bar_height"
             android:fitsSystemWindows="true"
             android:theme="@style/AppTheme.AppBarOverlay"
-            app:statusBarScrim="@android:color/transparent">
+            bind:statusBarScrim="@android:color/transparent">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:id="@+id/toolbar_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fitsSystemWindows="true"
-                app:contentScrim="?attr/colorPrimary"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed"
-                app:statusBarScrim="@android:color/transparent">
+                bind:contentScrim="?attr/colorPrimary"
+                bind:layout_scrollFlags="scroll|exitUntilCollapsed"
+                bind:statusBarScrim="@android:color/transparent">
 
                 <ImageView
                     android:layout_width="match_parent"
@@ -42,26 +43,26 @@
                 <androidx.appcompat.widget.Toolbar
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
-                    app:layout_collapseMode="pin"
-                    app:popupTheme="@style/AppTheme.PopupOverlay" />
+                    bind:layout_collapseMode="pin"
+                    bind:popupTheme="@style/AppTheme.PopupOverlay" />
             </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>
 
         <include
             layout="@layout/content_scrolling"
-            bind:item="@{item}"/>
+            bind:item="@{item}" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/fab_margin"
-            app:background="@color/colorPrimary"
-            app:backgroundTint="@color/colorPrimary"
-            app:fabSize="normal"
-            app:layout_anchor="@id/app_bar"
-            app:layout_anchorGravity="bottom|end"
-            app:srcCompat="@drawable/ic_search" />
+            bind:background="@color/colorPrimary"
+            bind:backgroundTint="@color/colorPrimary"
+            bind:fabSize="normal"
+            bind:layout_anchor="@id/app_bar"
+            bind:layout_anchorGravity="bottom|end"
+            bind:srcCompat="@drawable/ic_search" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
