@@ -14,6 +14,7 @@ import com.alfastack.myapplication.viewmodel.LocationViewModel
 import com.alfastack.placesapiwrapper.ApiWrapper
 import com.alfastack.placesapiwrapper.callbacks.ApiCallback
 import com.alfastack.placesapiwrapper.models.Restaurant
+import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_scrolling.*
 
@@ -34,6 +35,8 @@ class ScrollingActivity : AppCompatActivity() {
         locationController.startLocationService()
         mBinding.item = null
         locationViewModel.locationLiveData.observe(this, Observer { mBinding.item = it })
+        val params: AppBarLayout.LayoutParams = toolbar_layout.layoutParams as AppBarLayout.LayoutParams
+        params.scrollFlags = 0
         ApiWrapper.Builder(object : ApiCallback {
             override fun onFetched(data: MutableList<Restaurant>?) {
                 data?.let {
