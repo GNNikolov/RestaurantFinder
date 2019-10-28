@@ -34,6 +34,7 @@ class ScrollingActivity : AppCompatActivity() {
         restaurantList.collapsingToolbarLayout = toolbar_layout
         restaurantList.params = toolbar_layout.layoutParams as AppBarLayout.LayoutParams
         restaurantList.emptyView = customView
+        restaurantList.wrapperView = nestedContent
         val locationViewModel =
             ViewModelProvider.AndroidViewModelFactory.getInstance(this.application)
                 .create(LocationViewModel::class.java)
@@ -84,7 +85,6 @@ class ScrollingActivity : AppCompatActivity() {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == LocationController.LOCATION_CODE && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            locationController.startLocationService()
             locationController.startLocationService()
         }
 

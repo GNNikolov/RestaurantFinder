@@ -19,8 +19,9 @@
         tools:showIn="@layout/activity_scrolling">
 
         <LinearLayout
+            android:id="@+id/nestedContent"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="top"
             android:orientation="vertical">
 
@@ -36,7 +37,7 @@
             <com.alfastack.myapplication.LocationComponents
                 android:id="@+id/customView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:background="@{item}"
                 android:gravity="center_vertical"

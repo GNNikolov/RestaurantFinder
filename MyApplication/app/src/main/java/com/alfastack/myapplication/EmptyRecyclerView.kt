@@ -2,7 +2,10 @@ package com.alfastack.myapplication
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.Gravity
 import android.view.View
+import android.widget.FrameLayout
+import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED
@@ -23,6 +26,8 @@ class EmptyRecyclerView(context: Context, attributeSet: AttributeSet) : Recycler
     var params: AppBarLayout.LayoutParams? = null
 
     var collapsingToolbarLayout: CollapsingToolbarLayout? = null
+
+    var wrapperView: LinearLayout? = null
 
     private val dataObserver = object : AdapterDataObserver() {
         override fun onChanged() {
@@ -48,11 +53,13 @@ class EmptyRecyclerView(context: Context, attributeSet: AttributeSet) : Recycler
                 visibility = View.GONE
                 params?.scrollFlags = 0
                 collapsingToolbarLayout?.layoutParams = params
+                adjustGravity(Gravity.CENTER_VERTICAL)
             } else {
                 emptyView?.visibility = View.GONE
                 visibility = View.VISIBLE
                 params?.scrollFlags = SCROLL_FLAG_EXIT_UNTIL_COLLAPSED or SCROLL_FLAG_SCROLL
                 collapsingToolbarLayout?.layoutParams = params
+                adjustGravity(Gravity.TOP)
             }
         }
     }
@@ -63,5 +70,17 @@ class EmptyRecyclerView(context: Context, attributeSet: AttributeSet) : Recycler
         oldAdapter?.unregisterAdapterDataObserver(dataObserver)
         adapter?.registerAdapterDataObserver(dataObserver)
         initEmptyView()
+    }
+
+    private fun adjustGravity(param: Int) {
+        wrapperView?.let {
+            val params = FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.MATCH_PARENT
+            ).apply {
+                gravity = param
+            }
+            it.layoutParams = params
+        }
     }
 }
