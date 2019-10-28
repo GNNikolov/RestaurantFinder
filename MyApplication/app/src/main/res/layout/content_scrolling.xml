@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="item"
             type="android.location.Location" />
@@ -19,12 +18,30 @@
         tools:context=".ScrollingActivity"
         tools:showIn="@layout/activity_scrolling">
 
-        <com.alfastack.myapplication.LocationComponents
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
-            android:background="@{item}"
-            android:gravity="center_vertical"
-            android:orientation="vertical" />
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:orientation="vertical">
+
+            <com.alfastack.myapplication.EmptyRecyclerView
+                android:id="@+id/restaurantList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="visible"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                tools:listitem="@layout/restaurant_list_item" />
+
+            <com.alfastack.myapplication.LocationComponents
+                android:id="@+id/customView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:background="@{item}"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                android:visibility="visible" />
+        </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </layout>

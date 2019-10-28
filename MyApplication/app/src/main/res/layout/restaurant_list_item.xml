@@ -1,25 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/linearLayout"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    android:background="#00B3B0B0"
-    android:orientation="vertical">
+<layout>
 
-    <TextView
+    <data>
+
+        <variable
+            name="data"
+            type="com.alfastack.placesapiwrapper.models.Restaurant" />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="16dp"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        tools:text="Header" />
+        android:background="@android:color/white"
+        android:orientation="vertical">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingStart="16dp"
-        android:textSize="20sp"
-        tools:text="Footer" />
-</LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:background="@android:color/white"
+            android:text="@{data.name}"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            tools:text="Header" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:background="@android:color/white"
+            android:text="@{data.address}"
+            android:textSize="16sp"
+            tools:text="Footer" />
+    </LinearLayout>
+</layout>
