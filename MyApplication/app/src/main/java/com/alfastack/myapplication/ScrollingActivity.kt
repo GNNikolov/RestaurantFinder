@@ -26,6 +26,8 @@ import kotlinx.android.synthetic.main.content_scrolling.*
 
 class ScrollingActivity : AppCompatActivity() {
     private lateinit var locationController: LocationController
+    private var mLocation: Location? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scrolling)
@@ -73,16 +75,18 @@ class ScrollingActivity : AppCompatActivity() {
         }
         locationController = LocationController(this, locationViewModel)
         fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+            if (mLocation != null) {
+                ApiWrapper.Builder(callback).setLocation(mLocation).setRadius("1500").build()
+                    .execute()
+            } else {
+                Snackbar.make(view, "Error. No location provided!", Snackbar.LENGTH_LONG).show()
+            }
         }
         mBinding.item = null
-        locationViewModel.locationLiveData.observe(this, Observer { mBinding.item = it })
-        ApiWrapper.Builder(callback).setLocation(Location("MINE_PROV").apply {
-            latitude = 42.654643
-            longitude = 23.349079
-        }).setRadius("1500").build()//.execute()
-
+        locationViewModel.locationLiveData.observe(this, Observer {
+            mBinding.item = it
+            mLocation = it
+        })
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
