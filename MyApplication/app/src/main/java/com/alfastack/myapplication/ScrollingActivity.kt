@@ -103,6 +103,8 @@ class ScrollingActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == LocationController.LOCATION_CODE && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             locationController.startLocationService()
+        } else if (requestCode == LocationController.LOCATION_CODE && grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+            locationController.enableGPS = false
         }
 
     }

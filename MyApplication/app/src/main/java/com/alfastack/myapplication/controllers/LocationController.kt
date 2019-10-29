@@ -64,7 +64,7 @@ class LocationController(
     fun startLocationService() {
         if (isPermissionGranted() && enableGPS) {
             promptLocation()
-        } else if (!isPermissionGranted()) {
+        } else if (!isPermissionGranted() && enableGPS) {
             ActivityCompat.requestPermissions(fragmentActivity, mPermissions, LOCATION_CODE)
         }
     }
