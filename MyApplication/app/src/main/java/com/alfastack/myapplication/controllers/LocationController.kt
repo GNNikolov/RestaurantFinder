@@ -1,5 +1,6 @@
 package com.alfastack.myapplication.controllers
 
+import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.os.Looper
 import androidx.core.app.ActivityCompat
@@ -9,15 +10,22 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import com.alfastack.myapplication.viewmodel.LocationViewModel
+import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
+import com.google.android.gms.tasks.Task
 
-class LocationController(private val fragmentActivity: FragmentActivity, private val locationViewModel: LocationViewModel) : LifecycleObserver {
+class LocationController(
+    private val fragmentActivity: FragmentActivity,
+    private val locationViewModel: LocationViewModel
+) : LifecycleObserver {
     private val fusedLocationClient: FusedLocationProviderClient =
         FusedLocationProviderClient(fragmentActivity)
+    private val locationRequest = LocationRequest().apply {
+        priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        interval = MIN_INTERVAL
+    }
+    var enableGPS = true
     private val locationCallback: LocationCallback = object : LocationCallback() {
-        override fun onLocationAvailability(p0: LocationAvailability?) {
-            super.onLocationAvailability(p0)
-        }
 
         override fun onLocationResult(p0: LocationResult?) {
             super.onLocationResult(p0)
@@ -54,16 +62,9 @@ class LocationController(private val fragmentActivity: FragmentActivity, private
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     fun startLocationService() {
-        if (isPermissionGranted()) {
-            val locationRequest = LocationRequest()
-            locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-            locationRequest.interval = MIN_INTERVAL
-            fusedLocationClient.requestLocationUpdates(
-                locationRequest,
-                locationCallback,
-                Looper.getMainLooper()
-            )
-        } else {
+        if (isPermissionGranted() && enableGPS) {
+            promptLocation()
+        } else if (!isPermissionGranted()) {
             ActivityCompat.requestPermissions(fragmentActivity, mPermissions, LOCATION_CODE)
         }
     }
@@ -76,7 +77,33 @@ class LocationController(private val fragmentActivity: FragmentActivity, private
     companion object {
         const val LOCATION_CODE = 101
         const val MIN_INTERVAL: Long = 1500
+        const val REQUEST_CHECK_SETTINGS: Int = 100
     }
 
+    private fun promptLocation() {
+        val builder = LocationSettingsRequest.Builder().addLocationRequest(locationRequest)
+        val client: SettingsClient = LocationServices.getSettingsClient(fragmentActivity)
+        val task: Task<LocationSettingsResponse> = client.checkLocationSettings(builder.build())
+        task.addOnSuccessListener {
+            makeLocationRequest()
+        }
+        task.addOnFailureListener { exception ->
+            if (exception is ResolvableApiException) {
+                try {
+                    exception.startResolutionForResult(fragmentActivity, REQUEST_CHECK_SETTINGS)
+                } catch (sendEx: IntentSender.SendIntentException) {
+                }
+            }
+        }
+    }
+
+
+    private fun makeLocationRequest() {
+        fusedLocationClient.requestLocationUpdates(
+            locationRequest,
+            locationCallback,
+            Looper.getMainLooper()
+        )
+    }
 
 }

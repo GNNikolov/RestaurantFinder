@@ -16,7 +16,6 @@ import androidx.core.content.ContextCompat
  */
 class LocationComponents(context: Context, attributeSet: AttributeSet) :
     LinearLayout(context, attributeSet) {
-
     var imageView: ImageView = ImageView(context)
     var locationMessage: TextView = TextView(context)
     private val mColor = ContextCompat.getColor(context, R.color.darkGray)

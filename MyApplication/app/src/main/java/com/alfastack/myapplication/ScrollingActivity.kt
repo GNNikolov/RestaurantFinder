@@ -1,5 +1,7 @@
 package com.alfastack.myapplication
 
+import android.app.Activity
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
@@ -44,6 +46,12 @@ class ScrollingActivity : AppCompatActivity() {
                 .create(RestaurantViewModel::class.java)
         restaurantList.adapter = RestaurantAdapter(restaurantViewModel, this)
         restaurantList.layoutManager = LinearLayoutManager(this)
+        customView.imageView.setOnClickListener {
+            if (!locationController.enableGPS) {
+                locationController.enableGPS = true
+            }
+            locationController.startLocationService()
+        }
         val callback = object : ApiCallback {
             override fun onFetched(data: MutableList<Restaurant>?) {
                 data?.let {
@@ -68,7 +76,6 @@ class ScrollingActivity : AppCompatActivity() {
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
         }
-        locationController.startLocationService()
         mBinding.item = null
         locationViewModel.locationLiveData.observe(this, Observer { mBinding.item = it })
         ApiWrapper.Builder(callback).setLocation(Location("MINE_PROV").apply {
@@ -76,6 +83,16 @@ class ScrollingActivity : AppCompatActivity() {
             longitude = 23.349079
         }).setRadius("1500").build()//.execute()
 
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == LocationController.REQUEST_CHECK_SETTINGS && resultCode == Activity.RESULT_OK) {
+            locationController.enableGPS = true
+            locationController.startLocationService()
+        } else if (requestCode == LocationController.REQUEST_CHECK_SETTINGS && resultCode == Activity.RESULT_CANCELED) {
+            locationController.enableGPS = false
+        }
     }
 
     override fun onRequestPermissionsResult(
