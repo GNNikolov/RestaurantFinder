@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alfastack.myapplication.adapter.RestaurantAdapter
 import com.alfastack.myapplication.controllers.LocationController
@@ -34,6 +35,12 @@ class ScrollingActivity : AppCompatActivity() {
         val mBinding = DataBindingUtil.setContentView<ActivityScrollingBinding>(
             this,
             R.layout.activity_scrolling
+        )
+        restaurantList.addItemDecoration(
+            DividerItemDecoration(
+                restaurantList.context,
+                DividerItemDecoration.VERTICAL
+            )
         )
         restaurantList.collapsingToolbarLayout = toolbar_layout
         restaurantList.params = toolbar_layout.layoutParams as AppBarLayout.LayoutParams
@@ -64,9 +71,7 @@ class ScrollingActivity : AppCompatActivity() {
                 restaurantViewModel.restaurants.value = data
             }
 
-            override fun onPreExecute() {
-
-            }
+            override fun onPreExecute() {}
 
             override fun onFetchFailed(message: String?) {
                 Log.i("Finished", message.toString())
