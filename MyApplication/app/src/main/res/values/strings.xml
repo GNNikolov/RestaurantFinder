@@ -92,4 +92,6 @@
     <string name="action_settings">Settings</string>
     <string name="location_off">No active GPS\nClick to enable it.</string>
     <string name="location_on">Location available.\nReady to search!</string>
+    <string name="no_location_prov">Error. No location provided!</string>
+    <string name="localization">Getting location…</string>
 </resources>

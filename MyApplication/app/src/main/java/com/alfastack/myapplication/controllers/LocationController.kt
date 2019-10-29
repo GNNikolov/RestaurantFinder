@@ -24,6 +24,7 @@ class LocationController(
         priority = LocationRequest.PRIORITY_HIGH_ACCURACY
         interval = MIN_INTERVAL
     }
+    lateinit var OnLocationRequestSendCallback: () -> Unit
     var enableGPS = true
     private val locationCallback: LocationCallback = object : LocationCallback() {
 
@@ -47,7 +48,7 @@ class LocationController(
         fragmentActivity.lifecycle.addObserver(this)
     }
 
-    fun isPermissionGranted(): Boolean {
+    private fun isPermissionGranted(): Boolean {
         for (permission in mPermissions) {
             if (ContextCompat.checkSelfPermission(
                     fragmentActivity,
@@ -99,6 +100,7 @@ class LocationController(
 
 
     private fun makeLocationRequest() {
+        OnLocationRequestSendCallback()
         fusedLocationClient.requestLocationUpdates(
             locationRequest,
             locationCallback,

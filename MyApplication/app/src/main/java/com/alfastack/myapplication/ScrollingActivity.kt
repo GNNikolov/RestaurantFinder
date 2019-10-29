@@ -74,16 +74,21 @@ class ScrollingActivity : AppCompatActivity() {
 
         }
         locationController = LocationController(this, locationViewModel)
+        locationController.OnLocationRequestSendCallback = {
+            customView.showProgressiveBar()
+        }
         fab.setOnClickListener { view ->
             if (mLocation != null) {
                 ApiWrapper.Builder(callback).setLocation(mLocation).setRadius("1500").build()
                     .execute()
             } else {
-                Snackbar.make(view, "Error. No location provided!", Snackbar.LENGTH_LONG).show()
+                Snackbar.make(view, getString(R.string.no_location_prov), Snackbar.LENGTH_LONG)
+                    .show()
             }
         }
         mBinding.item = null
         locationViewModel.locationLiveData.observe(this, Observer {
+            customView.hideProgressiveBar()
             mBinding.item = it
             mLocation = it
         })

@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 
@@ -16,6 +17,7 @@ import androidx.core.content.ContextCompat
  */
 class LocationComponents(context: Context, attributeSet: AttributeSet) :
     LinearLayout(context, attributeSet) {
+    private var progressBar = ProgressBar(context)
     var imageView: ImageView = ImageView(context)
     var locationMessage: TextView = TextView(context)
     private val mColor = ContextCompat.getColor(context, R.color.darkGray)
@@ -25,8 +27,10 @@ class LocationComponents(context: Context, attributeSet: AttributeSet) :
         layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
         orientation = VERTICAL
         gravity = Gravity.CENTER_VERTICAL
+        addView(progressBar)
         addView(imageView)
         addView(locationMessage)
+        progressBar.visibility = View.GONE
         adjustComponents()
     }
 
@@ -60,6 +64,20 @@ class LocationComponents(context: Context, attributeSet: AttributeSet) :
             locationMessage.text = context.getString(R.string.location_on)
         } else {
             locationMessage.text = context.getString(R.string.location_off)
+        }
+    }
+
+    fun showProgressiveBar() {
+        imageView.visibility = View.GONE
+        progressBar.visibility = View.VISIBLE
+        locationMessage.text = context.getString(R.string.localization)
+    }
+
+    fun hideProgressiveBar() {
+        if (progressBar.visibility == View.VISIBLE) {
+            imageView.visibility = View.VISIBLE
+            progressBar.visibility = View.GONE
+            locationMessage.text = context.getString(R.string.location_on)
         }
     }
 
