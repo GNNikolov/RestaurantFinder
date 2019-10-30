@@ -8,7 +8,7 @@ import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.AppBarLayout
-import com.google.android.material.appbar.AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED
+import com.google.android.material.appbar.AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS
 import com.google.android.material.appbar.AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL
 import com.google.android.material.appbar.CollapsingToolbarLayout
 
@@ -57,7 +57,7 @@ class EmptyRecyclerView(context: Context, attributeSet: AttributeSet) : Recycler
             } else {
                 emptyView?.visibility = View.GONE
                 visibility = View.VISIBLE
-                params?.scrollFlags = SCROLL_FLAG_EXIT_UNTIL_COLLAPSED or SCROLL_FLAG_SCROLL
+                params?.scrollFlags = SCROLL_FLAG_ENTER_ALWAYS or SCROLL_FLAG_SCROLL
                 collapsingToolbarLayout?.layoutParams = params
                 adjustGravity(Gravity.TOP)
             }
