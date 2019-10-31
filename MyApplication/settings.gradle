@@ -1,2 +1,2 @@
-include ':app', ':apiwrapper', ':placesapiwrapper'
+include ':app', ':placesapiwrapper'
 rootProject.name='My Application'
