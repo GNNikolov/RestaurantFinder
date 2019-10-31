@@ -1,4 +1,4 @@
-package com.alfastack.myapplication
+package com.alfastack.myapplication.customviews
 
 import android.content.Context
 import android.location.Location
@@ -11,6 +11,7 @@ import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import com.alfastack.myapplication.R
 
 /**
  * Created by Joro on 27/10/2019
@@ -20,7 +21,9 @@ class StatusView(context: Context, attributeSet: AttributeSet) :
     private var progressBar = ProgressBar(context)
     var imageView: ImageView = ImageView(context)
     var locationMessage: TextView = TextView(context)
-    private val mColor = ContextCompat.getColor(context, R.color.darkGray)
+    private val mColor = ContextCompat.getColor(context,
+        R.color.darkGray
+    )
     private val imgSize = context.resources.getDimension(R.dimen.img_size).toInt()
     
     init {

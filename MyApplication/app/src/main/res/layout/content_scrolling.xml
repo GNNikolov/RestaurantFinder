@@ -34,7 +34,7 @@
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 tools:listitem="@layout/restaurant_list_item" />
 
-            <com.alfastack.myapplication.StatusView
+            <com.alfastack.myapplication.customviews.StatusView
                 android:id="@+id/customView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

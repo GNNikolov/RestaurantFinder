@@ -94,4 +94,5 @@
     <string name="location_on">Location available.\nReady to search!</string>
     <string name="no_location_prov">Error. No location provided!</string>
     <string name="localization">Getting location…</string>
+    <string name="dialog_radius_title">Set radius from current location</string>
 </resources>

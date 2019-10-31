@@ -15,9 +15,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.alfastack.myapplication.adapter.RestaurantAdapter
 import com.alfastack.myapplication.controllers.LocationController
 import com.alfastack.myapplication.databinding.ActivityScrollingBinding
+import com.alfastack.myapplication.dialogfragments.RadiusSetDialog
 import com.alfastack.myapplication.viewmodel.LocationViewModel
 import com.alfastack.myapplication.viewmodel.RestaurantViewModel
-import com.alfastack.placesapiwrapper.ApiWrapper
 import com.alfastack.placesapiwrapper.callbacks.ApiCallback
 import com.alfastack.placesapiwrapper.models.Restaurant
 import com.google.android.material.appbar.AppBarLayout
@@ -81,12 +81,13 @@ class ScrollingActivity : AppCompatActivity() {
             customView.showProgressiveBar()
         }
         fab.setOnClickListener { view ->
-            if (mLocation != null) {
+            /*if (mLocation != null) {
                 ApiWrapper.Builder(callback).setLocation(mLocation).setRadius("1500").build().execute()
             } else {
                 Snackbar.make(view, getString(R.string.no_location_prov), Snackbar.LENGTH_LONG)
                     .show()
-            }
+            }*/
+            RadiusSetDialog.show(supportFragmentManager)
         }
         mBinding.item = null
         locationViewModel.locationLiveData.observe(this, Observer {
