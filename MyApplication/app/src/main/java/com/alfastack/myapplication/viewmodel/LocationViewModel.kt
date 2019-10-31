@@ -5,7 +5,7 @@ import android.location.Location
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import com.alfastack.myapplication.LocationComponents
+import com.alfastack.myapplication.StatusView
 
 class LocationViewModel(mApplication: Application) : AndroidViewModel(mApplication) {
     val locationLiveData = MutableLiveData<Location>()
@@ -13,7 +13,7 @@ class LocationViewModel(mApplication: Application) : AndroidViewModel(mApplicati
     companion object {
         @BindingAdapter("android:background")
         @JvmStatic
-        fun setLocationText(view: LocationComponents, location: Location?) {
+        fun setLocationText(view: StatusView, location: Location?) {
             view.updateViews(location)
         }
     }

@@ -61,7 +61,7 @@ class ScrollingActivity : AppCompatActivity() {
             }
             locationController.startLocationService()
         }
-        val callback = object : ApiCallback {
+        val callback = object : ApiCallback() {
             override fun onFetched(data: MutableList<Restaurant>?) {
                 data?.let {
                     for (item in it) {
@@ -70,13 +70,11 @@ class ScrollingActivity : AppCompatActivity() {
                 }
                 restaurantViewModel.restaurants.value = data
             }
-
-            override fun onPreExecute() {}
-
             override fun onFetchFailed(message: String?) {
-                Log.i("Finished", message.toString())
+                message?.let {
+                    Snackbar.make(coordinator, "Error: $it", Snackbar.LENGTH_LONG).show()
+                }
             }
-
         }
         locationController = LocationController(this, locationViewModel)
         locationController.OnLocationRequestSendCallback = {
@@ -84,8 +82,7 @@ class ScrollingActivity : AppCompatActivity() {
         }
         fab.setOnClickListener { view ->
             if (mLocation != null) {
-                ApiWrapper.Builder(callback).setLocation(mLocation).setRadius("1500").build()
-                    .execute()
+                ApiWrapper.Builder(callback).setLocation(mLocation).setRadius("1500").build().execute()
             } else {
                 Snackbar.make(view, getString(R.string.no_location_prov), Snackbar.LENGTH_LONG)
                     .show()

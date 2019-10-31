@@ -10,14 +10,16 @@ import java.util.List;
  * Created by Joro on 21/10/2019
  */
 @MainThread
-public interface ApiCallback {
+public abstract class ApiCallback {
+
+    public ApiCallback() { }
 
     @MainThread
-    void onFetched(List<Restaurant> data);
+    public abstract void onFetched(List<Restaurant> data);
 
     @MainThread
-    void onPreExecute();
+    public void onPreExecute() { }
 
     @MainThread
-    void onFetchFailed(String message);
+    public abstract void onFetchFailed(String message);
 }

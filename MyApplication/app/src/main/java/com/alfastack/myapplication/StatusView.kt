@@ -15,7 +15,7 @@ import androidx.core.content.ContextCompat
 /**
  * Created by Joro on 27/10/2019
  */
-class LocationComponents(context: Context, attributeSet: AttributeSet) :
+class StatusView(context: Context, attributeSet: AttributeSet) :
     LinearLayout(context, attributeSet) {
     private var progressBar = ProgressBar(context)
     var imageView: ImageView = ImageView(context)

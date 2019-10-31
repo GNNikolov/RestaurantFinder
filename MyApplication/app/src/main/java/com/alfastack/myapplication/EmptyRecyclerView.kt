@@ -17,7 +17,7 @@ import com.google.android.material.appbar.CollapsingToolbarLayout
  */
 class EmptyRecyclerView(context: Context, attributeSet: AttributeSet) : RecyclerView(context, attributeSet) {
 
-    var emptyView: LocationComponents? = null
+    var emptyView: StatusView? = null
         set(value) {
             field = value
             initEmptyView()
