@@ -18,6 +18,7 @@ import com.alfastack.myapplication.databinding.ActivityScrollingBinding
 import com.alfastack.myapplication.dialogfragments.RadiusSetDialog
 import com.alfastack.myapplication.viewmodel.LocationViewModel
 import com.alfastack.myapplication.viewmodel.RestaurantViewModel
+import com.alfastack.placesapiwrapper.ApiWrapper
 import com.alfastack.placesapiwrapper.callbacks.ApiCallback
 import com.alfastack.placesapiwrapper.models.Restaurant
 import com.google.android.material.appbar.AppBarLayout
@@ -70,6 +71,7 @@ class ScrollingActivity : AppCompatActivity() {
                 }
                 restaurantViewModel.restaurants.value = data
             }
+
             override fun onFetchFailed(message: String?) {
                 message?.let {
                     Snackbar.make(coordinator, "Error: $it", Snackbar.LENGTH_LONG).show()
@@ -81,13 +83,13 @@ class ScrollingActivity : AppCompatActivity() {
             customView.showProgressiveBar()
         }
         fab.setOnClickListener { view ->
-            /*if (mLocation != null) {
-                ApiWrapper.Builder(callback).setLocation(mLocation).setRadius("1500").build().execute()
+            if (mLocation != null) {
+                RadiusSetDialog.show(this) {
+                    ApiWrapper.Builder(callback).setLocation(mLocation).setRadius(it.toString()).build().execute()
+                }
             } else {
-                Snackbar.make(view, getString(R.string.no_location_prov), Snackbar.LENGTH_LONG)
-                    .show()
-            }*/
-            RadiusSetDialog.show(this)
+                Snackbar.make(view, getString(R.string.no_location_prov), Snackbar.LENGTH_LONG).show()
+            }
         }
         mBinding.item = null
         locationViewModel.locationLiveData.observe(this, Observer {

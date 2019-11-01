@@ -15,25 +15,26 @@ import com.alfastack.myapplication.viewmodel.DialogViewModel
  */
 object RadiusSetDialog {
 
-    fun show(context: FragmentActivity) {
+    fun show(context: FragmentActivity, clickOk: (radius: Int) -> Unit) {
         val binding = DataBindingUtil.inflate<SeekBarDialogBinding>(
             LayoutInflater.from(context),
             R.layout.seek_bar_dialog,
             null,
             false
         )
-        val vModel = DialogViewModel(binding)
-        createDialog(context, binding).show()
+        createDialog(DialogViewModel(binding) ,context, binding, clickOk).show()
     }
 
-    private fun createDialog(
-        context: FragmentActivity,
-        seekBarDialogBinding: SeekBarDialogBinding
-    ): Dialog {
+    private fun createDialog(dialogViewModel: DialogViewModel, context: FragmentActivity, seekBarDialogBinding: SeekBarDialogBinding, clickOk: (radius: Int) -> Unit): Dialog {
         val alertDialog = AlertDialog.Builder(context)
             .setCustomTitle(DialogTextView(context))
             .setView(seekBarDialogBinding.root)
-        return alertDialog.create()
+        val dialog = alertDialog.create()
+        seekBarDialogBinding.buttonOk.setOnClickListener {
+            clickOk(dialogViewModel.radius)
+            dialog.dismiss()
+        }
+        return dialog
     }
 
 }
