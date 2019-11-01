@@ -26,9 +26,11 @@ class PlacesCallBack(
     }
 
     override fun onFetchFailed(message: String?) {
-        activityContext.customView.hideProgressiveBar(activityContext.getString(R.string.location_on))
         message?.let {
             Snackbar.make(activityContext.coordinator, "Error: $it", Snackbar.LENGTH_LONG).show()
+            return
         }
+        Snackbar.make(activityContext.coordinator, "Unexpected error", Snackbar.LENGTH_LONG).show()
+        activityContext.customView.hideProgressiveBar(activityContext.getString(R.string.location_on))
     }
 }
