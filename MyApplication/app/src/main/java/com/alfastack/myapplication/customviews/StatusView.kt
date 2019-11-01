@@ -62,7 +62,7 @@ class StatusView(context: Context, attributeSet: AttributeSet) :
     fun updateViews(mLocation: Location?) {
         val mDrawable =
             if (mLocation == null) imageView.context.getDrawable(R.drawable.ic_action_name)
-            else imageView.context.getDrawable(R.drawable.ic_loc_on)
+            else imageView.context.getDrawable(R.drawable.ic_check)
         imageView.setImageDrawable(mDrawable)
         if (mLocation != null) {
             locationMessage.text = context.getString(R.string.location_on)
