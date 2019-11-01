@@ -87,7 +87,7 @@ class ScrollingActivity : AppCompatActivity() {
                 Snackbar.make(view, getString(R.string.no_location_prov), Snackbar.LENGTH_LONG)
                     .show()
             }*/
-            RadiusSetDialog.show(supportFragmentManager)
+            RadiusSetDialog.show(this)
         }
         mBinding.item = null
         locationViewModel.locationLiveData.observe(this, Observer {
