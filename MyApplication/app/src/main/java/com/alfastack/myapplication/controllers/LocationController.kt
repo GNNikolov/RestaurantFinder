@@ -18,24 +18,30 @@ class LocationController(
     private val fragmentActivity: FragmentActivity,
     private val locationViewModel: LocationViewModel
 ) : LifecycleObserver {
+
     private val fusedLocationClient: FusedLocationProviderClient =
         FusedLocationProviderClient(fragmentActivity)
+
     private val locationRequest = LocationRequest().apply {
         priority = LocationRequest.PRIORITY_HIGH_ACCURACY
         interval = MIN_INTERVAL
     }
-    lateinit var OnLocationRequestSendCallback: () -> Unit
-    var enableGPS = true
-    private val locationCallback: LocationCallback = object : LocationCallback() {
 
+    lateinit var OnLocationRequestSendCallback: () -> Unit
+
+    var enableGPS = true
+
+    private val locationCallback: LocationCallback = object : LocationCallback() {
+        @Synchronized
         override fun onLocationResult(p0: LocationResult?) {
             super.onLocationResult(p0)
-            p0?.let {
-                for (location in p0.locations) {
-                    locationViewModel.locationLiveData.value = location
+            p0?.let { lResult ->
+                synchronized(lResult) {
+                    for (location in p0.locations) {
+                        locationViewModel.locationLiveData.value = location
+                    }
                 }
             }
-
         }
     }
 
