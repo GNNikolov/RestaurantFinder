@@ -5,7 +5,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -19,8 +18,6 @@ import com.alfastack.myapplication.dialogfragments.RadiusSetDialog
 import com.alfastack.myapplication.viewmodel.LocationViewModel
 import com.alfastack.myapplication.viewmodel.RestaurantViewModel
 import com.alfastack.placesapiwrapper.ApiWrapper
-import com.alfastack.placesapiwrapper.callbacks.ApiCallback
-import com.alfastack.placesapiwrapper.models.Restaurant
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_scrolling.*
@@ -29,6 +26,7 @@ import kotlinx.android.synthetic.main.content_scrolling.*
 class ScrollingActivity : AppCompatActivity() {
     private lateinit var locationController: LocationController
     private var mLocation: Location? = null
+    private lateinit var placesCallBack: PlacesCallBack
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,6 +52,7 @@ class ScrollingActivity : AppCompatActivity() {
         val restaurantViewModel =
             ViewModelProvider.AndroidViewModelFactory.getInstance(this.application)
                 .create(RestaurantViewModel::class.java)
+        placesCallBack = PlacesCallBack(restaurantViewModel, this)
         restaurantList.adapter = RestaurantAdapter(restaurantViewModel, this)
         restaurantList.layoutManager = LinearLayoutManager(this)
         customView.imageView.setOnClickListener {
@@ -62,38 +61,24 @@ class ScrollingActivity : AppCompatActivity() {
             }
             locationController.startLocationService()
         }
-        val callback = object : ApiCallback() {
-            override fun onFetched(data: MutableList<Restaurant>?) {
-                data?.let {
-                    for (item in it) {
-                        Log.i("Fetched", item.toString())
-                    }
-                }
-                restaurantViewModel.restaurants.value = data
-            }
-
-            override fun onFetchFailed(message: String?) {
-                message?.let {
-                    Snackbar.make(coordinator, "Error: $it", Snackbar.LENGTH_LONG).show()
-                }
-            }
-        }
         locationController = LocationController(this, locationViewModel)
         locationController.OnLocationRequestSendCallback = {
-            customView.showProgressiveBar()
+            customView.showProgressiveBar(getString(R.string.localization))
         }
         fab.setOnClickListener { view ->
             if (mLocation != null) {
                 RadiusSetDialog.show(this) {
-                    ApiWrapper.Builder(callback).setLocation(mLocation).setRadius(it.toString()).build().execute()
+                    ApiWrapper.Builder(placesCallBack).setLocation(mLocation)
+                        .setRadius(it.toString()).build().execute()
                 }
             } else {
-                Snackbar.make(view, getString(R.string.no_location_prov), Snackbar.LENGTH_LONG).show()
+                Snackbar.make(view, getString(R.string.no_location_prov), Snackbar.LENGTH_LONG)
+                    .show()
             }
         }
         mBinding.item = null
         locationViewModel.locationLiveData.observe(this, Observer {
-            customView.hideProgressiveBar()
+            customView.hideProgressiveBar(getString(R.string.location_on))
             mBinding.item = it
             mLocation = it
         })

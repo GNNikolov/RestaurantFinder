@@ -21,11 +21,12 @@ class StatusView(context: Context, attributeSet: AttributeSet) :
     private var progressBar = ProgressBar(context)
     var imageView: ImageView = ImageView(context)
     var locationMessage: TextView = TextView(context)
-    private val mColor = ContextCompat.getColor(context,
+    private val mColor = ContextCompat.getColor(
+        context,
         R.color.darkGray
     )
     private val imgSize = context.resources.getDimension(R.dimen.img_size).toInt()
-    
+
     init {
         layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
         orientation = VERTICAL
@@ -70,17 +71,23 @@ class StatusView(context: Context, attributeSet: AttributeSet) :
         }
     }
 
-    fun showProgressiveBar() {
+    fun showProgressiveBar(message: String) {
         imageView.visibility = View.GONE
         progressBar.visibility = View.VISIBLE
-        locationMessage.text = context.getString(R.string.localization)
+        locationMessage.text = message
+    }
+
+    fun hideProgressiveBar(message: String) {
+        if (progressBar.visibility == View.VISIBLE) {
+            imageView.visibility = View.VISIBLE
+            progressBar.visibility = View.GONE
+            locationMessage.text = message
+        }
     }
 
     fun hideProgressiveBar() {
         if (progressBar.visibility == View.VISIBLE) {
-            imageView.visibility = View.VISIBLE
             progressBar.visibility = View.GONE
-            locationMessage.text = context.getString(R.string.location_on)
         }
     }
 
