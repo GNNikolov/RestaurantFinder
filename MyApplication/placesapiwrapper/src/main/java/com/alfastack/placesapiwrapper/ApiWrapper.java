@@ -26,8 +26,9 @@ public class ApiWrapper {
         }
 
         public Builder setLocation(final Location location) {
-            final String mLocation = "&location=" + location.getLatitude()
-                    + ",%20"  + location.getLongitude();
+            final String latitude = String.valueOf(location.getLatitude()).replace(",", ".");
+            final String longitude = String.valueOf(location.getLongitude()).replace(",", ".");
+            final String mLocation = "&location=" + latitude + ",%20" + longitude;
             baseURL = baseURL.concat(mLocation);
             return this;
         }
@@ -35,6 +36,12 @@ public class ApiWrapper {
         public Builder setRadius(final String radius) {
             final String mRadius = "&radius=" + radius;
             baseURL = baseURL.concat(mRadius);
+            return this;
+        }
+
+        public Builder setKeyword(final String keyword) {
+            final String mKeyword = "&keyword=" + keyword;
+            baseURL = baseURL.concat(mKeyword);
             return this;
         }
 

@@ -67,9 +67,12 @@ class ScrollingActivity : AppCompatActivity() {
         }
         fab.setOnClickListener { view ->
             if (mLocation != null) {
-                RadiusSetDialog.show(this) {
-                    ApiWrapper.Builder(placesCallBack).setLocation(mLocation)
-                        .setRadius(it.toString()).build().execute()
+                RadiusSetDialog.show(this) { radius, keyword ->
+                    val builder = ApiWrapper.Builder(placesCallBack).setLocation(mLocation)
+                    if (keyword != null) {
+                        builder.setKeyword(keyword)
+                    }
+                    builder.setRadius(radius.toString()).build().execute()
                 }
             } else {
                 Snackbar.make(view, getString(R.string.no_location_prov), Snackbar.LENGTH_LONG)

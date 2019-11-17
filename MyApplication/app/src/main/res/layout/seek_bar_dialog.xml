@@ -1,15 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <variable
             name="vModel"
             type="com.alfastack.myapplication.viewmodel.DialogViewModel" />
     </data>
-    <androidx.constraintlayout.widget.ConstraintLayout
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/white">
+        android:background="@android:color/white"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textRadius"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="16dp"
+            android:gravity="center"
+            android:padding="16dp"
+            android:text="5(meters)"
+            android:textSize="24sp" />
 
         <SeekBar
             android:id="@+id/seekBar2"
@@ -19,26 +31,23 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
             android:progress="@={vModel.radius}"
-            android:max="1000"
-            app:layout_constraintBottom_toTopOf="@+id/textRadius"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:max="1000" />
 
-        <TextView
-            android:id="@+id/textRadius"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            android:gravity="center"
-            android:text="5(meters)"
-            android:textSize="24sp"
-            android:padding="16dp"
-            app:layout_constraintBottom_toTopOf="@+id/buttonOk"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/seekBar2" />
+            android:layout_marginBottom="8dp">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/keywordInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Keyword(optional)"
+                android:text="@={vModel.keyword}" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/buttonOk"
@@ -50,12 +59,7 @@
             android:background="@color/colorPrimary"
             android:text="Ok"
             android:textColor="@android:color/white"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textRadius" />
+            android:textStyle="bold" />
 
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 </layout>
