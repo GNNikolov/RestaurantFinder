@@ -5,6 +5,8 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -14,7 +16,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.alfastack.myapplication.adapter.RestaurantAdapter
 import com.alfastack.myapplication.controllers.LocationController
 import com.alfastack.myapplication.databinding.ActivityScrollingBinding
+import com.alfastack.myapplication.dialogfragments.ConnectionLostDialog
 import com.alfastack.myapplication.dialogfragments.RadiusSetDialog
+import com.alfastack.myapplication.networking.CONNECTION
+import com.alfastack.myapplication.networking.NetworkLiveData
 import com.alfastack.myapplication.viewmodel.LocationViewModel
 import com.alfastack.myapplication.viewmodel.RestaurantViewModel
 import com.alfastack.placesapiwrapper.ApiWrapper
@@ -27,6 +32,9 @@ class ScrollingActivity : AppCompatActivity() {
     private lateinit var locationController: LocationController
     private var mLocation: Location? = null
     private lateinit var placesCallBack: PlacesCallBack
+    private val networkDialog = ConnectionLostDialog()
+    private val uiHandler = Handler(Looper.getMainLooper())
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,6 +92,38 @@ class ScrollingActivity : AppCompatActivity() {
             customView.hideProgressiveBar(getString(R.string.location_on))
             mBinding.item = it
             mLocation = it
+        })
+        NetworkLiveData(application).observe(this, Observer {
+            when (it!!) {
+
+                CONNECTION.LOST -> {
+                    uiHandler.post {
+                        networkDialog.show(
+                            supportFragmentManager,
+                            "Connection lost!",
+                            "Available connection is needed in order to use the application..."
+                        )
+                    }
+                }
+
+                CONNECTION.AVAILABLE -> {
+                    uiHandler.post {
+                        if (networkDialog.isAdded) {
+                            networkDialog.dismiss()
+                        }
+                    }
+                }
+
+                CONNECTION.UNAVAILABLE -> {
+                    uiHandler.post {
+                        networkDialog.show(
+                            supportFragmentManager,
+                            "Connection unavailable!",
+                            "Please turn on your connection..."
+                        )
+                    }
+                }
+            }
         })
     }
 
