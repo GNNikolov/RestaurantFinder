@@ -6,7 +6,6 @@ import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
-import android.util.Log
 import androidx.lifecycle.LiveData
 
 /**
@@ -14,7 +13,7 @@ import androidx.lifecycle.LiveData
  */
 class NetworkLiveData constructor(application: Application) : LiveData<CONNECTION>() {
 
-    private var networkRequest: NetworkRequest.Builder = NetworkRequest.Builder()
+    private val networkRequest: NetworkRequest.Builder = NetworkRequest.Builder()
         .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
         .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
 
@@ -37,14 +36,17 @@ class NetworkLiveData constructor(application: Application) : LiveData<CONNECTIO
                 }
 
                 override fun onLost(network: Network) {
-                    super.onLost(network)
-                    postValue(CONNECTION.LOST)
+                    if (cManager.allNetworks.isEmpty()) {
+                        super.onLost(network)
+                        postValue(CONNECTION.LOST)
+                    }
                 }
 
                 override fun onUnavailable() {
-                    super.onUnavailable()
-                    Log.i("ConnectionCommando", "Unaval")
-                    postValue(CONNECTION.UNAVAILABLE)
+                    if (cManager.allNetworks.isEmpty()) {
+                        super.onUnavailable()
+                        postValue(CONNECTION.UNAVAILABLE)
+                    }
                 }
             })
     }

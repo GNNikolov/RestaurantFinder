@@ -98,11 +98,13 @@ class ScrollingActivity : AppCompatActivity() {
 
                 CONNECTION.LOST -> {
                     uiHandler.post {
-                        networkDialog.show(
-                            supportFragmentManager,
-                            "Connection lost!",
-                            "Available connection is needed in order to use the application..."
-                        )
+                        if (!networkDialog.isVisible) {
+                            networkDialog.show(
+                                supportFragmentManager,
+                                "Connection lost!",
+                                "Available connection is needed in order to use the application..."
+                            )
+                        }
                     }
                 }
 
@@ -116,11 +118,13 @@ class ScrollingActivity : AppCompatActivity() {
 
                 CONNECTION.UNAVAILABLE -> {
                     uiHandler.post {
-                        networkDialog.show(
-                            supportFragmentManager,
-                            "Connection unavailable!",
-                            "Please turn on your connection..."
-                        )
+                        if (!networkDialog.isVisible) {
+                            networkDialog.show(
+                                supportFragmentManager,
+                                "Connection unavailable!",
+                                "Please turn on your connection..."
+                            )
+                        }
                     }
                 }
             }
