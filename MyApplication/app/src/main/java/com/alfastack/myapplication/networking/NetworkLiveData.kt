@@ -23,6 +23,9 @@ class NetworkLiveData constructor(application: Application) : LiveData<CONNECTIO
 
     override fun onActive() {
         super.onActive()
+        if (cManager.allNetworks.isEmpty()) {
+            postValue(CONNECTION.UNAVAILABLE)
+        }
         init()
     }
 

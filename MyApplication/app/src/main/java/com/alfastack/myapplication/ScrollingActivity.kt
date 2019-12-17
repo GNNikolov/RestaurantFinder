@@ -122,7 +122,7 @@ class ScrollingActivity : AppCompatActivity() {
                             networkDialog.show(
                                 supportFragmentManager,
                                 "Connection unavailable!",
-                                "Please turn on your connection..."
+                                "Please turn on your connection, app cannot be used without it!"
                             )
                         }
                     }
